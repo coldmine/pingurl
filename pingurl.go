@@ -8,7 +8,9 @@ import (
 
 func main() {
 	if len(os.Args[1:]) == 0 {
-		fmt.Println("ex) urlstatus http://www.google.com")
+		fmt.Println("Check URL status")
+		fmt.Println("ex1) urlstatus http://www.google.com")
+		fmt.Println("ex2) urlstatus http://www.google.com http://www.naver.com")
 		os.Exit(1)
 	}
 	ch := make(chan string)
@@ -24,7 +26,7 @@ func fetch(url string, ch chan<- string) {
 	resp, err := http.Get(url)
 	rcode := "ERR"
 	if err != nil {
-		ch <- fmt.Sprintf(" %3s %s", rcode, url)
+		ch <- fmt.Sprintf(" %3s %3d %s", rcode, 0, url)
 		return
 	}
 	snum := resp.StatusCode
@@ -45,5 +47,5 @@ func fetch(url string, ch chan<- string) {
 		case 306 : rcode="OK"
 		case 401 : rcode="OK" //권한이 없음. 인증필요.
 	}
-	ch <- fmt.Sprintf(" %3s %s", rcode, url)
+	ch <- fmt.Sprintf(" %3s %3d %s", rcode, snum, url)
 }
