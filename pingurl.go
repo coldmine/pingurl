@@ -26,7 +26,7 @@ func fetch(url string, ch chan<- string) {
 	resp, err := http.Get(url)
 	rcode := "ERR"
 	if err != nil {
-		ch <- fmt.Sprintf(" %3s %3d %s", rcode, 0, url)
+		ch <- fmt.Sprintf(" %3s %3d %s : %s", rcode, 0, url, err)
 		return
 	}
 	snum := resp.StatusCode
