@@ -7,9 +7,11 @@ import (
 	"strings"
 )
 
+var Version string
+
 func main() {
 	if len(os.Args[1:]) == 0 {
-		fmt.Println("Check URL status")
+		fmt.Printf("URL Check %s\n", Version)
 		fmt.Println("ex1) urlstatus http://www.google.com")
 		fmt.Println("ex2) urlstatus http://www.google.com http://www.naver.com")
 		os.Exit(1)
