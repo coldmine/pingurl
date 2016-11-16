@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -23,6 +24,10 @@ func main() {
 }
 
 func fetch(url string, ch chan<- string) {
+	if !(strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")) {
+		ch <- fmt.Sprintf(` ERR     %s : Begin with "http://" or "https://".`, url)
+		return
+	}
 	resp, err := http.Get(url)
 	rcode := "OK"
 	if err != nil {
