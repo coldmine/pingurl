@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 )
+
+var Version string
 
 func main() {
 	if len(os.Args[1:]) == 0 {
-		fmt.Println("Check URL status")
-		fmt.Println("ex1) urlstatus http://www.google.com")
-		fmt.Println("ex2) urlstatus http://www.google.com http://www.naver.com")
+		fmt.Printf("URL Check %s\n", Version)
+		fmt.Println("ex1) $ urlcheck http://www.google.com")
+		fmt.Println("ex2) $ urlcheck http://www.google.com http://www.naver.com")
 		os.Exit(1)
 	}
 	ch := make(chan string)
@@ -23,6 +26,10 @@ func main() {
 }
 
 func fetch(url string, ch chan<- string) {
+	if !(strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://")) {
+		ch <- fmt.Sprintf(` ERR     %s : Begin with "http://" or "https://".`, url)
+		return
+	}
 	resp, err := http.Get(url)
 	rcode := "OK"
 	if err != nil {
